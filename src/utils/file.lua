@@ -25,5 +25,16 @@ function M.create_file(path, content)
   end
 end
 
+-- Append content to file
+function M.append_to_file(path, content)
+  local file = io.open(path, "a")
+  if file then
+    file:write(content)
+    file:close()
+  else
+    print("Error: could not append to entry file")
+  end
+end
+
 
 return M

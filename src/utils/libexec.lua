@@ -4,7 +4,10 @@ local M = {}
 function M.setup()
     -- Determine directory of the running script
     local libexec_dir = arg[0]:match("(.*/)")
-    
+    if not libexec_dir then
+        libexec_dir = "./"
+    end
+
     -- Prepend paths to package.path
     package.path = table.concat({
         libexec_dir .. "?.lua",
