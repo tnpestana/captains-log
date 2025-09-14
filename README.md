@@ -41,14 +41,6 @@ With content like:
 ```markdown
 # Captain's Log - Saturday, September 14, 2024
 
-## Goals for Today
-
-
-## What Happened
-
-
-## Reflections
-
 ```
 
 ## Requirements
@@ -56,6 +48,3 @@ With content like:
 - Lua 5.4+
 - nvim (or configure a different editor)
 
----
-
-*Keep a steady course through your daily thoughts and experiences.* 🧭
