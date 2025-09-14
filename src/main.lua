@@ -1,13 +1,13 @@
+local script_dir = debug.getinfo(1, "S").source:match("@(.*/)")
+if script_dir then
+  package.path = package.path .. ";" .. script_dir .. "?.lua"
+  package.path = package.path .. ";" .. script_dir .. "?/init.lua"
+end
+
 local libexec = require("utils/libexec")
 local file_utils = require("utils/file")
 local str_utils = require("utils/string")
-
-local function get_todays_entry_path(dir)
-  local now = os.date('*t')
-  local year, month, day = now.year, now.month, now.day
-  local path = string.format("%s/%04d/%02d/%02d.md", dir, year, month, day)
-  return path
-end
+local journal_utils = require("utils/journal")
 
 local function parse_args(args)
   local options = {
@@ -34,13 +34,6 @@ local function launch_editor(path)
 end
 
 local function main()
-  local script_dir = debug.getinfo(1, "S").source:match("@(.*/)")
-  if script_dir then
-    package.path = package.path .. ";" .. script_dir .. "?.lua"
-    package.path = package.path .. ";" .. script_dir .. "?/init.lua"
-  end
-
-
   libexec.setup()
 
   local options = parse_args(arg)
@@ -49,13 +42,13 @@ local function main()
   local entry_dir = home_dir .. "/Documents/captains-log"
   file_utils.create_dir(entry_dir)
 
-  local entry_path = get_todays_entry_path(entry_dir)
+  local entry_path = journal_utils.get_todays_entry_path(entry_dir)
 
   if options.write_mode then
-    local date_str = os.date("%A, %B %d, %Y")
-    local entry_header = "# Captain's Log - " .. date_str
     file_utils.create_dir(entry_path)
-    file_utils.create_file(entry_path, entry_header)
+
+    local header = journal_utils.format_date_header()
+    file_utils.create_file(entry_path, header)
 
     local time_str = os.date("%H:%M")
     local entry_timestamp = "\n\n## " .. time_str
