@@ -8,6 +8,7 @@ local libexec = require("utils/libexec")
 local file_utils = require("utils/file")
 local str_utils = require("utils/string")
 local journal_utils = require("utils/journal")
+local config_utils = require("utils/config")
 
 local function parse_args(args)
   local options = {
@@ -38,11 +39,10 @@ local function main()
 
   local options = parse_args(arg)
 
-  local home_dir = os.getenv("HOME")
-  local entry_dir = home_dir .. "/Documents/captains-log"
-  file_utils.create_dir(entry_dir)
+  local output_dir = config_utils.BASE_DIR
+  file_utils.create_dir(output_dir)
 
-  local entry_path = journal_utils.get_todays_entry_path(entry_dir)
+  local entry_path = journal_utils.get_todays_entry_path(output_dir)
 
   if options.write_mode then
     file_utils.create_dir(entry_path)
