@@ -1,3 +1,7 @@
+local libexec = require("utils/libexec")
+local file_utils = require("utils/file")
+local str_utils = require("utils/string")
+
 local function get_todays_entry_path(dir)
   local now = os.date('*t')
   local year, month, day = now.year, now.month, now.day
@@ -7,12 +11,17 @@ end
 
 local function parse_args(args)
   local options = {
-    write_mode = false
+    write_mode = false,
+    entry_text = ""
   }
 
   for i, arg in ipairs(args) do
     if arg == "-w" then
       options.write_mode = true
+      local entry_text = args[i + 1]
+      if entry_text and str_utils.is_nonempty_string(entry_text) then
+        options.entry_text = entry_text
+      end
     end
   end
 
@@ -25,39 +34,39 @@ local function launch_editor(path)
 end
 
 local function main()
-  -- Add the current script's directory to Lua's module path
   local script_dir = debug.getinfo(1, "S").source:match("@(.*/)")
   if script_dir then
     package.path = package.path .. ";" .. script_dir .. "?.lua"
     package.path = package.path .. ";" .. script_dir .. "?/init.lua"
   end
 
-  local libexec = require("utils/libexec")
-  local file_utils = require("utils/file")
 
   libexec.setup()
 
-  -- Parse command-line arguments
   local options = parse_args(arg)
 
   local home_dir = os.getenv("HOME")
-  local entry_dir = home_dir .. "/Documents/CaptainsLog"
+  local entry_dir = home_dir .. "/Documents/captains-log"
   file_utils.create_dir(entry_dir)
 
   local entry_path = get_todays_entry_path(entry_dir)
 
   if options.write_mode then
-    -- Write mode: append a new timestamped entry
     local date_str = os.date("%A, %B %d, %Y")
-    local entry_header = "# Captain's Log - " .. date_str .. "\n\n"
+    local entry_header = "# Captain's Log - " .. date_str
     file_utils.create_dir(entry_path)
     file_utils.create_file(entry_path, entry_header)
 
     local time_str = os.date("%H:%M")
-    local timestamp_entry = "\n## " .. time_str .. "\n\n"
-    file_utils.append_to_file(entry_path, timestamp_entry)
+    local entry_timestamp = "\n\n## " .. time_str
+    file_utils.append_to_file(entry_path, entry_timestamp)
+
+    if str_utils.is_nonempty_string(options.entry_text) then
+      local entry_text = "\n" .. options.entry_text
+      file_utils.append_to_file(entry_path, entry_text)
+      return -- early return since the entry is complete
+    end
   else
-    -- Normal mode: create file if doesn't exist
     local date_str = os.date("%A, %B %d, %Y")
     local entry_header = "# Captain's Log - " .. date_str .. "\n\n"
     file_utils.create_dir(entry_path)
