@@ -32,37 +32,15 @@ clog -w
 clog -w "Meeting notes: discussed project timeline"
 ```
 
-The tool will:
-1. Create the necessary directory structure
-2. Generate a new entry file if it doesn't exist
-3. Open the file in your editor with cursor positioned at the end
+**Write Mode (`-w`)**: Adds timestamped entries (e.g., `## 14:30`) for multiple entries per day. Include text to skip the editor.
 
-### Write Mode (`-w`)
-When using `clog -w`, the tool adds a new timestamped subheader (e.g., `## 14:30`) to the current day's entry, allowing you to add multiple entries throughout the day. You can also provide text directly: `clog -w "Your entry text"` to add an entry without opening the editor.
-
-## Example
-
-Running `clog` creates and opens:
-```
-~/Documents/captains-log/2024/09/14.md
-```
-
-With content like:
+## Example Output
 ```markdown
 # Captain's Log - Saturday, September 14, 2024
-
-```
-
-Using `clog -w` throughout the day creates:
-```markdown
-# Captain's Log - Saturday, September 14, 2024
-
 ## 09:30
 Morning standup notes...
-
 ## 14:30
 Afternoon progress update...
-
 ## 18:45
 End of day summary...
 ```
