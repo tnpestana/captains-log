@@ -12,11 +12,6 @@ local config = require("utils/config")
 local cli = require("utils/cli")
 
 local function handle_write_mode(entry_path, options)
-    file.create_dir(entry_path)
-
-    local header = journal.format_date_header()
-    file.create_file(entry_path, header)
-
     local time_str = os.date("%H:%M")
     local entry_timestamp = "\n## " .. time_str
     file.append_to_file(entry_path, entry_timestamp)
@@ -26,13 +21,6 @@ local function handle_write_mode(entry_path, options)
       file.append_to_file(entry_path, entry_text)
       os.exit(0)
     end
-end
-
-local function handle_normal_mode(entry_path)
-  local date_str = os.date("%A, %B %d, %Y")
-  local entry_header = "# Captain's Log - " .. date_str .. "\n\n"
-  file.create_dir(entry_path)
-  file.create_file(entry_path, entry_header)
 end
 
 local function launch_editor(path)
@@ -53,11 +41,11 @@ local function main()
   file.create_dir(output_dir)
 
   local entry_path = journal.get_todays_entry_path(output_dir)
+  local header = journal.format_date_header()
+  file.create_file(entry_path, header)
 
   if options.write_mode then
     handle_write_mode(entry_path, options)
-  else
-    handle_normal_mode(entry_path)
   end
 
   launch_editor(entry_path)
