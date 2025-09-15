@@ -12,12 +12,11 @@ local config = require("utils/config")
 local cli = require("utils/cli")
 
 local function handle_write_mode(entry_path, options)
-    local time_str = os.date("%H:%M")
-    local entry_timestamp = "\n## " .. time_str
+    local entry_timestamp = journal.format_entry_timestamp()
     file.append_to_file(entry_path, entry_timestamp)
 
     if str.is_nonempty_string(options.entry_text) then
-      local entry_text = "\n" .. options.entry_text
+      local entry_text = journal.format_entry_prefix() .. options.entry_text
       file.append_to_file(entry_path, entry_text)
       os.exit(0)
     end

@@ -12,4 +12,15 @@ function M.format_date_header()
   return "# Captain's Log - " .. date_str
 end
 
+function M.format_entry_timestamp()
+  local time_str = os.date("%H:%M")
+  local timestamp = "\n\n## " .. time_str
+  return timestamp
+end
+
+function M.format_entry_prefix()
+  local prefix = "\n"
+  return prefix
+end
+
 return M
