@@ -37,10 +37,13 @@ clog -w "Meeting notes: discussed project timeline"
 ## Example Output
 ```markdown
 # Captain's Log - Saturday, September 14, 2024
+
 ## 09:30
 Morning standup notes...
+
 ## 14:30
 Afternoon progress update...
+
 ## 18:45
 End of day summary...
 ```
