@@ -31,13 +31,12 @@ Captain's Log ⚓ - A simple command-line daily journaling tool
 Usage: clog [options] [text]
 
 Options:
-  -w, --write [text]    Add timestamped entry to today's log
-                        Optional text argument to add entry without opening editor
+  -w, --write <text>   Add timestamped entry to today's log
+                       Requires text argument
   -h, --help           Show this help message
 
 Examples:
   clog                 Create or open today's entry
-  clog -w              Add timestamped entry and open editor
   clog -w "Quick note" Add entry without opening editor
 ]])
 end

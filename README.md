@@ -27,6 +27,9 @@ clog
 
 # Quick entry without opening editor
 clog -w "Meeting notes: discussed project timeline"
+
+# Show help
+clog -h
 ```
 
 **Write Mode (`-w`)**: Adds timestamped entries (e.g., `## 14:30`) for multiple entries per day. Requires text input.
