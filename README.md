@@ -8,7 +8,6 @@ Captain's Log creates and manages daily journal entries organized by date. Each 
 
 - **Creates daily entries** automatically organized as `YYYY/MM/DD.md`
 - **Multiple entries per day** with timestamped subheaders
-- **Opens entries in your editor** (nvim by default) with cursor at the end
 - **Quick inline entries** without opening the editor
 - **Handles directory creation** automatically - no setup required
 
