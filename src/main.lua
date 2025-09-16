@@ -12,18 +12,21 @@ local config = require("utils/config")
 local cli = require("utils/cli")
 
 local function handle_write_mode(entry_path, options)
+    if not str.is_nonempty_string(options.entry_text) then
+      print("Error: -w flag requires text input")
+      os.exit(1)
+    end
+
     local entry_timestamp = journal.format_entry_timestamp()
     file.append_to_file(entry_path, entry_timestamp)
 
-    if str.is_nonempty_string(options.entry_text) then
-      local entry_text = journal.format_entry_prefix() .. options.entry_text
-      file.append_to_file(entry_path, entry_text)
-      os.exit(0)
-    end
+    local entry_text = journal.format_entry_prefix() .. options.entry_text
+    file.append_to_file(entry_path, entry_text)
+    os.exit(0)
 end
 
-local function launch_editor(path)
-  local command = "nvim + '" .. path .. "'"
+local function launch_editor(path, editor)
+  local command = editor .. " '" .. path .. "'"
   os.execute(command)
 end
 
@@ -47,7 +50,7 @@ local function main()
     handle_write_mode(entry_path, options)
   end
 
-  launch_editor(entry_path)
+  launch_editor(entry_path, configs.editor)
 end
 
 -- Run the app

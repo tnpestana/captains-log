@@ -25,14 +25,11 @@ brew install captains-log
 # Create or open today's entry
 clog
 
-# Add a new timestamped entry to today's log
-clog -w
-
 # Quick entry without opening editor
 clog -w "Meeting notes: discussed project timeline"
 ```
 
-**Write Mode (`-w`)**: Adds timestamped entries (e.g., `## 14:30`) for multiple entries per day. Include text to skip the editor.
+**Write Mode (`-w`)**: Adds timestamped entries (e.g., `## 14:30`) for multiple entries per day. Requires text input.
 
 ## Example Output
 ```markdown
@@ -60,18 +57,20 @@ If no config file exists, the following defaults are used:
 
 ```lua
 {
-  base_dir = os.getenv("HOME") .. "/Documents/captains-log"
+  base_dir = os.getenv("HOME") .. "/Documents/captains-log",
+  editor = "vi"
 }
 ```
 
 ### Custom Configuration
 
-Create a config file to customize the journal storage location:
+Create a config file to customize settings:
 
 ```lua
 -- ~/.config/captains-log/config.lua
 return {
-  base_dir = "/path/to/your/journal/directory"
+  base_dir = "/path/to/your/journal/directory",
+  editor = "nvim"  -- or "vim", "code", "nano", etc.
 }
 ```
 
@@ -80,5 +79,4 @@ The config file is loaded automatically on each run. If the file doesn't exist o
 ## Requirements
 
 - Lua 5.4+
-- nvim (or configure a different editor)
 

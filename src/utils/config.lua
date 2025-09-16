@@ -1,7 +1,8 @@
 local M = {}
 
 local default_config = {
-  base_dir = os.getenv("HOME") .. "/Documents/captains-log"
+  base_dir = os.getenv("HOME") .. "/Documents/captains-log",
+  editor = "vi"
 }
 
 function M.get_config_path()
