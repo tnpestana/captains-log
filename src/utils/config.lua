@@ -13,13 +13,21 @@ function M.get_config_path()
 
 function M.load()
   local config_path = M.get_config_path()
-  local success, config = pcall(dofile, config_path)
+  local success, user_config = pcall(dofile, config_path)
 
-  if success then
-    return config
-  else
-    return default_config
+  local merged_config = {}
+
+  for key, value in pairs(default_config) do
+    merged_config[key] = value
   end
+
+  if success and type(user_config) == "table" then
+    for key, value in pairs(user_config) do
+      merged_config[key] = value
+    end
+  end
+
+  return merged_config
 end
 
 return M
