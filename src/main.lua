@@ -36,10 +36,10 @@ local function main()
     return
   end
 
-  local output_dir = config.BASE_DIR
-  file.create_dir(output_dir)
-
+  local configs = config.load()
+  local output_dir = configs.base_dir
   local entry_path = journal.get_todays_entry_path(output_dir)
+  file.create_dir(entry_path)
   local header = journal.format_date_header()
   file.create_file(entry_path, header)
 
