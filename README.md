@@ -48,6 +48,35 @@ Afternoon progress update...
 End of day summary...
 ```
 
+## Configuration
+
+Captain's Log supports user configuration through a Lua config file located at:
+- `$XDG_CONFIG_HOME/captains-log/config.lua`
+- Or `~/.config/captains-log/config.lua` if `XDG_CONFIG_HOME` is not set
+
+### Default Configuration
+
+If no config file exists, the following defaults are used:
+
+```lua
+{
+  base_dir = os.getenv("HOME") .. "/Documents/captains-log"
+}
+```
+
+### Custom Configuration
+
+Create a config file to customize the journal storage location:
+
+```lua
+-- ~/.config/captains-log/config.lua
+return {
+  base_dir = "/path/to/your/journal/directory"
+}
+```
+
+The config file is loaded automatically on each run. If the file doesn't exist or has syntax errors, the default configuration is used instead.
+
 ## Requirements
 
 - Lua 5.4+
