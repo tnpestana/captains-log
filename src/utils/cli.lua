@@ -4,20 +4,23 @@ local str_utils = require("utils/string")
 
 function M.parse_args(args)
   local options = {
-    write_mode = false,
-    entry_text = "",
-    help = false
+    mode = "default", -- "default", "write", "search", "help"
+    text = "" -- entry_text for write mode, search_query for search mode
+  }
+
+  local mode_map = {
+    ["-w"] = "write", ["--write"] = "write",
+    ["-s"] = "search", ["--search"] = "search",
+    ["-h"] = "help", ["--help"] = "help"
   }
 
   for i, arg in ipairs(args) do
-    if arg == "-w" or arg == "--write" then
-      options.write_mode = true
-      local entry_text = args[i + 1]
-      if entry_text and str_utils.is_nonempty_string(entry_text) then
-        options.entry_text = entry_text
+    if mode_map[arg] then
+      options.mode = mode_map[arg]
+      local text_arg = args[i + 1]
+      if text_arg and str_utils.is_nonempty_string(text_arg) then
+        options.text = text_arg
       end
-    elseif arg == "-h" or arg == "--help" then
-      options.help = true
     end
   end
 
@@ -33,11 +36,14 @@ Usage: clog [options] [text]
 Options:
   -w, --write <text>   Add timestamped entry to today's log
                        Requires text argument
+  -s, --search <query> Search through all journal entries
+                       Requires search query
   -h, --help           Show this help message
 
 Examples:
-  clog                 Create or open today's entry
-  clog -w "Quick note" Add entry without opening editor
+  clog                    Create or open today's entry
+  clog -w "Quick note"    Add entry without opening editor
+  clog -s "project notes" Search for "project notes" in all entries
 ]])
 end
 

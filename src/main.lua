@@ -10,9 +10,10 @@ local str = require("utils/string")
 local journal = require("utils/journal")
 local config = require("utils/config")
 local cli = require("utils/cli")
+local search = require("utils/search")
 
-local function handle_write_mode(entry_path, options)
-    if not str.is_nonempty_string(options.entry_text) then
+local function handle_write_mode(entry_path, text)
+    if not str.is_nonempty_string(text) then
       print("Error: -w flag requires text input")
       os.exit(1)
     end
@@ -20,7 +21,7 @@ local function handle_write_mode(entry_path, options)
     local entry_timestamp = journal.format_entry_timestamp()
     file.append_to_file(entry_path, entry_timestamp)
 
-    local entry_text = journal.format_entry_prefix() .. options.entry_text
+    local entry_text = journal.format_entry_prefix() .. text
     file.append_to_file(entry_path, entry_text)
     os.exit(0)
 end
@@ -34,23 +35,30 @@ local function main()
   libexec.setup()
 
   local options = cli.parse_args(arg)
-  if options.help then
+  local configs = config.load()
+
+  if options.mode == "help" then
     cli.print_help()
     return
+  elseif options.mode == "search" then
+    search.search_entries(configs.base_dir, options.text)
+    return
+  elseif options.mode == "write" then
+    local output_dir = configs.base_dir
+    local entry_path = journal.get_todays_entry_path(output_dir)
+    file.create_dir(entry_path)
+    local header = journal.format_date_header()
+    file.create_file(entry_path, header)
+    handle_write_mode(entry_path, options.text)
+  else
+    -- Default mode: open today's entry in editor
+    local output_dir = configs.base_dir
+    local entry_path = journal.get_todays_entry_path(output_dir)
+    file.create_dir(entry_path)
+    local header = journal.format_date_header()
+    file.create_file(entry_path, header)
+    launch_editor(entry_path, configs.editor)
   end
-
-  local configs = config.load()
-  local output_dir = configs.base_dir
-  local entry_path = journal.get_todays_entry_path(output_dir)
-  file.create_dir(entry_path)
-  local header = journal.format_date_header()
-  file.create_file(entry_path, header)
-
-  if options.write_mode then
-    handle_write_mode(entry_path, options)
-  end
-
-  launch_editor(entry_path, configs.editor)
 end
 
 -- Run the app
