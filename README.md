@@ -9,6 +9,7 @@ Captain's Log creates and manages daily journal entries organized by date. Each 
 - **Creates daily entries** automatically organized as `YYYY/MM/DD.md`
 - **Multiple entries per day** with timestamped subheaders
 - **Quick inline entries** without opening the editor
+- **Search through all entries** to find past notes and thoughts
 - **Handles directory creation** automatically - no setup required
 
 ## Installation
@@ -27,13 +28,20 @@ clog
 # Quick entry without opening editor
 clog -w "Meeting notes: discussed project timeline"
 
+# Search through all entries
+clog -s "project timeline"
+
 # Show help
 clog -h
 ```
 
 **Write Mode (`-w`)**: Adds timestamped entries (e.g., `## 14:30`) for multiple entries per day. Requires text input.
 
+**Search Mode (`-s`)**: Searches through all journal entries for the specified query. Case-insensitive substring matching.
+
 ## Example Output
+
+### Journal Entry
 ```markdown
 # Captain's Log - Saturday, September 14, 2024
 
@@ -45,6 +53,16 @@ Afternoon progress update...
 
 ## 18:45
 End of day summary...
+```
+
+### Search Results
+```bash
+$ clog -s "standup"
+
+2024/09/14:
+  4: Morning standup notes...
+
+Found 1 matches
 ```
 
 ## Configuration
