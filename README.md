@@ -10,6 +10,7 @@ Captain's Log creates and manages daily journal entries organized by date. Each 
 - **Multiple entries per day** with timestamped subheaders
 - **Quick inline entries** without opening the editor
 - **Search through all entries** to find past notes and thoughts
+- **Regex search mode** for advanced pattern matching
 - **Handles directory creation** automatically - no setup required
 
 ## Installation
@@ -28,8 +29,11 @@ clog
 # Quick entry without opening editor
 clog -w "Meeting notes: discussed project timeline"
 
-# Search through all entries
+# Plain search (substring)
 clog -s "project timeline"
+
+# Regex search (Lua patterns)
+clog -r "%d%d:%d%d"   # finds timestamps like 09:30
 
 # Show help
 clog -h
@@ -55,12 +59,22 @@ Afternoon progress update...
 End of day summary...
 ```
 
-### Search Results
+### Plain Search Results
 ```bash
 $ clog -s "standup"
 
 2024/09/14:
   4: Morning standup notes...
+
+Found 1 matches
+```
+ 
+### Regex Search Results
+```
+$ clog -r "[Uu]pdate"
+
+2024/09/14:
+  6: Afternoon progress update...
 
 Found 1 matches
 ```
