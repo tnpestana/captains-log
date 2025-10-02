@@ -41,7 +41,10 @@ local function main()
     cli.print_help()
     return
   elseif options.mode == "search" then
-    search.search_entries(configs.base_dir, options.text)
+    search.search_entries(configs.base_dir, options.text, true)
+    return
+  elseif options.mode == "regex" then
+    search.search_entries(configs.base_dir, options.text, false)
     return
   elseif options.mode == "write" then
     local output_dir = configs.base_dir
