@@ -17,7 +17,7 @@ function M.find_all_entries(base_dir)
   return entries
 end
 
-function M.search_in_file(file_path, query)
+function M.search_in_file(file_path, query, plain)
   local matches = {}
   local file_handle = io.open(file_path, "r")
 
@@ -32,7 +32,7 @@ function M.search_in_file(file_path, query)
     line_number = line_number + 1
     local line_lower = string.lower(line)
 
-    if string.find(line_lower, query_lower, 1, true) then
+    if string.find(line_lower, query_lower, 1, plain) then
       table.insert(matches, {
         line_number = line_number,
         content = line,
@@ -45,7 +45,7 @@ function M.search_in_file(file_path, query)
   return matches
 end
 
-function M.search_entries(base_dir, query)
+function M.search_entries(base_dir, query, plain)
   if not query or query == "" then
     print("Error: Search query cannot be empty")
     return
@@ -55,7 +55,7 @@ function M.search_entries(base_dir, query)
   local total_matches = 0
 
   for _, entry_path in ipairs(entries) do
-    local matches = M.search_in_file(entry_path, query)
+    local matches = M.search_in_file(entry_path, query, plain)
 
     if #matches > 0 then
       -- Extract date from path (YYYY/MM/DD.md)
